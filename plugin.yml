@@ -7,7 +7,7 @@ api: [1.6.0]
 commands:
   areapvp:
     description: "Manage PVP areas"
-    usage: "/areapvp <p1/p2/c/d/pvp>"
+    usage: "/areapvp <p1/p2/create/del/pvp>"
     permission: areapvp.command.areapvp
 permissions:
   areapvp.command.areapvp:

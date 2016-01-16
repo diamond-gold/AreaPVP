@@ -110,7 +110,7 @@ class Main extends PluginBase implements Listener {
 						$p1 = new Vector3($area["x1"],$area["y1"],$area["z1"]);
 						$p2 = new Vector3($area["x2"],$area["y2"],$area["z2"]);
 						if ($this->canPVP($p,$p1,$p2,$lv1,$lv2)){
-							$p->sendMessage("可 PVP");
+							$p->sendMessage("Can PVP");
 							return true;
 						}
 					}
