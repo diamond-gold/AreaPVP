@@ -29,6 +29,7 @@ class Main extends PluginBase implements Listener {
 		if ($cmd->getName() === "areapvp"){
 			if (!isset($args[0])) return false;
 			if(!($p instanceof Player) && $args[0] !== "list" && $args[0] !== "del"){
+				$p->sendMessage(TextFormat::RED . "你只能在游戏中执行此指令");
 				return true;
 			}
 			$n = $p->getName();
