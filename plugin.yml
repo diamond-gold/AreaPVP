@@ -1,0 +1,18 @@
+name: AreaPVP
+main: wolfdale\AreaPVP\Main
+author: wolfdale
+version: "1.0.0"
+load: POSTWORLD
+api: [1.6.0]
+commands:
+  areapvp:
+    description: "Manage PVP areas"
+    usage: "/areapvp <p1/p2/c/d/pvp>"
+    permission: areapvp.command.areapvp
+permissions:
+  areapvp.command.areapvp:
+    description: "Access to areapvp command"
+    default: op
+  areapvp.bypass.nopvp:
+    description: "Allow PVP in non-PVP areas"
+    default: op
