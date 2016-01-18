@@ -3,11 +3,17 @@ Limits PVP to only configured areas
 
 # Commands
 Set first point to your current position: /areapvp p1
+
 Set second point to your current position: /areapvp p2
+
 Create an area with name specified: /areapvp create <Name>
+
 Delete an area with name specified: /areapvp delete <Name>
+
 Tests whether players can pvp at your current position: /areapvp t
+
 Lists all areas: /areapvp list
+
 Toggles pvp in areas: /areapvp pvp
 
 # Copyright
