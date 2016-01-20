@@ -29,7 +29,7 @@ class Main extends PluginBase implements Listener {
 		if ($cmd->getName() === "areapvp"){
 			if (!isset($args[0])) return false;
 			if(!($p instanceof Player) && $args[0] !== "list" && $args[0] !== "del"){
-				$p->sendMessage(TextFormat::RED . "你只能在游戏中执行此指令");
+				$p->sendMessage(TextFormat::RED . "This Command can only be used in-game.");
 				return true;
 			}
 			$n = $p->getName();
@@ -39,38 +39,38 @@ class Main extends PluginBase implements Listener {
 					$y = floor($p->y);
 					$z = floor($p->z);
 					$this->temp[$n]["p1"] = array($x,$y,$z,$p->getLevel()->getName());
-					$p->sendMessage("p1 设置为 $x $y $z");
+					$p->sendMessage("p1 set as $x $y $z");
 				break;
 				case "p2":
 					$x = floor($p->x);
 					$y = floor($p->y);
 					$z = floor($p->z);
 					$this->temp[$n]["p2"] = array($x,$y,$z,$p->getLevel()->getName());
-					$p->sendMessage("p2 设置为 $x $y $z");
+					$p->sendMessage("p2 set as $x $y $z");
 				break;
 				case "create":
 					if (!isset($args[1])){
-						$p->sendMessage(TextFormat::RED."用法: /areapvp c <name>");
+						$p->sendMessage(TextFormat::RED."Usage: /areapvp create <name>");
 						return true;
 					}
 					if (!isset($this->temp[$n])){
-						$p->sendMessage(TextFormat::RED."请先设置一个点");
+						$p->sendMessage(TextFormat::RED."Please set a point first");
 					}
 					if (!isset($this->temp[$n]["p1"])){
-						$p->sendMessage(TextFormat::RED."请先设置p1");
+						$p->sendMessage(TextFormat::RED."Please set p1");
 						return true;
 					}
 					if(!isset($this->temp[$n]["p2"])){
-						$p->sendMessage(TextFormat::RED."请先设置p2");
+						$p->sendMessage(TextFormat::RED."Please set p2");
 						return true;
 					}
 					if ($this->temp[$n]["p1"][3] !== $this->temp[$n]["p2"][3]){
-						$p->sendMessage(TextFormat::RED."p1 和 p2 必须在同一个世界");
+						$p->sendMessage(TextFormat::RED."p1 and p2 must be in the same world");
 						return true;
 					}
 					$areaname = strtolower($args[1]);
 					if (isset($this->areas[$areaname])){
-						$p->sendMessage(TextFormat::RED."$areaname 已经存在");
+						$p->sendMessage(TextFormat::RED."$areaname already exsits");
 						return true;
 					}
 					$this->areas[$areaname] = array("name" => $areaname,
@@ -82,27 +82,27 @@ class Main extends PluginBase implements Listener {
 													"z2" => $this->temp[$n]["p2"][2],
 													"level" => $this->temp[$n]["p2"][3]
 													);
-					$p->sendMessage(TextFormat::GREEN."区域 $areaname 创造成功!");
+					$p->sendMessage(TextFormat::GREEN."area $areaname created successfully!");
 					$this->saveYml();
 					unset($this->temp[$n]);
 				break;
 				case "del":
 					if (!isset($args[1])){
-						$p->sendMessage(TextFormat::RED."用法: /areapvp d <name>");
+						$p->sendMessage(TextFormat::RED."Usage: /areapvp del <name>");
 						return true;
 					}
 					$areaname = strtolower($args[1]);
 					if (isset($this->areas[$areaname])){
-						$p->sendMessage(TextFormat::GREEN."地区 $areaname 成功删除");
+						$p->sendMessage(TextFormat::GREEN."area $areaname deleted successfully");
 						unset($this->areas[$args[1]]);
 						$this->saveYml();
-					}else $p->sendMessage(TextFormat::RED."地区 $areaname 不存在");
+					}else $p->sendMessage(TextFormat::RED."area $areaname does not exist");
 					return true;
 				break;
 				case "t":
 					foreach($this->areas as $area) {
 						if ($area === false){
-							$p->sendMessage("无法 PVP (PVP 关闭状态)");
+							$p->sendMessage("cannot PVP (PVP is off)");
 							return true;
 						}elseif($area === true) continue;
 						$lv1 = $p->getLevel()->getName();
@@ -110,14 +110,14 @@ class Main extends PluginBase implements Listener {
 						$p1 = new Vector3($area["x1"],$area["y1"],$area["z1"]);
 						$p2 = new Vector3($area["x2"],$area["y2"],$area["z2"]);
 						if ($this->canPVP($p,$p1,$p2,$lv1,$lv2)){
-							$p->sendMessage("可 PVP");
+							$p->sendMessage("Can PVP");
 							return true;
 						}
 					}
-					$p->sendMessage("无法 PVP (不在范围内)");
+					$p->sendMessage("cannot PVP (not in area)");
 				break;
 				case "list":
-					$output = TextFormat::AQUA."区域：".TextFormat::GREEN;
+					$output = TextFormat::AQUA."Areas：".TextFormat::GREEN;
 					foreach($this->areas as $areaname => $areadata){
 						if($areaname !== "PVPisOn") $output .= " $areaname,";
 					}
@@ -126,7 +126,7 @@ class Main extends PluginBase implements Listener {
 				break;
 				case "pvp":
 					$this->areas["PVPisOn"] = !$this->areas["PVPisOn"];
-					$p->sendMessage("PVP 已".($this->areas["PVPisOn"] ? "开启" : "关闭"));
+					$p->sendMessage("PVP is ".($this->areas["PVPisOn"] ? "enabled" : "disabled"));
 					$this->saveYml();
 					return true;
 				break;
@@ -145,7 +145,7 @@ class Main extends PluginBase implements Listener {
 				foreach($this->areas as $area) {
 					if (!isset($area["x1"])){
 						if ($area === false){
-							$dmg->sendTip(TextFormat::RED."PVP 并没有开启");
+							$dmg->sendTip(TextFormat::RED."PVP is not enabled");
 							$event->setCancelled();
 							return;
 						}
@@ -158,8 +158,8 @@ class Main extends PluginBase implements Listener {
 					if($this->canPVP($dmg,$p1,$p2,$lv1,$lv2)){
 						if ($this->canPVP($p,$p1,$p2,$lv1,$lv2)){
 							return;
-						}else $dmg->sendTip(TextFormat::AQUA."对手在 PVP 场地外面, 无法造成伤害");
-					}else $dmg->sendTip(TextFormat::AQUA."你在 PVP 场地外面, 无法造成伤害");
+						}else $dmg->sendTip(TextFormat::AQUA."Your opponent is outside of the PVP area");
+					}else $dmg->sendTip(TextFormat::AQUA."You are outside of the PVP area");
 				}
 				$event->setCancelled();
 			}
@@ -167,14 +167,6 @@ class Main extends PluginBase implements Listener {
 	}
 	
 	public function canPVP(Vector3 $pp, Vector3 $p1, Vector3 $p2, $lv1,$lv2){
-				/*var_dump(min($p1->getX(),$p2->getX()) <= $pp->getX());
-				var_dump(max($p1->getX(),$p2->getX()) >= $pp->getX());
-				var_dump(min($p1->getY(),$p2->getY()) <= $pp->getY());
-				var_dump(max($p1->getY(),$p2->getY()) >= $pp->getY());//returns false
-				var_dump(max($p1->getY(),$p2->getY()).">=".$pp->getY());
-				var_dump(min($p1->getZ(),$p2->getZ()) <= $pp->getZ());
-				var_dump(max($p1->getZ(),$p2->getZ()) >= $pp->getZ());
-				var_dump($lv1 === $lv2);*/
 		return ((min($p1->getX(),$p2->getX()) <= $pp->getX()) && 
 				(max($p1->getX(),$p2->getX()) >= $pp->getX()) && 
 				(min($p1->getY(),$p2->getY()) <= $pp->getY()) && 
